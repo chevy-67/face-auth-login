@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Layout */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+        }
+
+        /* Container Styling */
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Form Elements */
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input[type="text"], 
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Video Preview */
+        video, canvas {
+            width: 100%;
+            height: auto;
+            margin-top: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 20px;
+            }
+
+            input[type="text"], 
+            input[type="password"] {
+                font-size: 12px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+        form a{
+            width: 100%;
+            padding: 12px;
+            background-color: #104b12;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+    </style>
+
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const payload = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert(result.message);
+                window.location.href = result.redirect;
+            } else {
+                alert(result.message); // Show the popup
+            }
+        }
+        // Capture and process photo from webcam
+        function capturePhoto() {
+            const video = document.querySelector("#video");
+            const canvas = document.querySelector("#canvas");
+            const context = canvas.getContext("2d");
+
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL("image/jpeg");
+            document.querySelector("#image").value = imageData;
+
+            // Stop webcam after capturing photo
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+
+        // Start webcam when page loads
+        function startWebcam() {
+            const video = document.querySelector("#video");
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch(() => alert("Webcam access denied!"));
+            }
+        }
+    </script>
+</head>
+<body onload="startWebcam()">
+    <div class="login-container">
+        <h1>Login</h1>
+        <h4 style="color: red;">{{msg}}</h4>
+        <form action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="video">Capture Photo:</label>
+            <video id="video" autoplay></video>
+            <button type="button" onclick="capturePhoto()">Capture Photo</button>
+
+            <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+            <input type="hidden" id="image" name="image">
+
+            <label for="pass">Password:</label>
+            <input type="password" id="pass" name="pass" required>
+
+            <button type="submit">Login</button><br><br><br>
+            <a href="signup">Don't have an account</a>
+        </form>
+    </div>
+</body>
+</html>

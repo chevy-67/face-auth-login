@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        section {
+            padding: 20px;
+            background: #fff;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background: #333;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .logout a{
+            text-decoration: none;
+            background-color: black;
+            color: bisque;
+            margin-left: 80%;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="logout">
+            <a href="index">Logout</a>
+        </div>
+    </header>
+    <h2>Welcome back {{username}}!</h2>
+    <section id="home">
+        <h2>Home</h2>
+        <p>This is the webpage opened after successull face verification</p>
+    </section>
+    <section id="about">
+        <h2>About</h2>
+        <p>This is the webpage opened after successull face verification</p>
+    </section>
+    <footer>
+        <p>&copy; 2025 My Sample Webpage. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

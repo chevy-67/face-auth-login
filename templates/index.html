@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('image.jpeg');
+            background-color: #333;
+        }
+
+        .home-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.6); /* Increased transparency */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        button {
+            width: 200px;
+            padding: 10px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <h1>Welcome</h1>
+        <h3 style="color: rgb(31, 221, 25);">{{msg}}</h3>
+        <button><a href="login">Login</a></button>
+        <button><a href="signup">Sign Up</a></button>
+    </div>
+</body>
+</html>

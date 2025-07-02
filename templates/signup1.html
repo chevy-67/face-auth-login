@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            overflow: hidden;
+        }
+
+        /* Background video */
+        video.background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .signup-container {
+            background-color: rgba(255, 255, 255, 0.8); /* Added transparency */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            z-index: 1;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .camera-section {
+            display: none;
+            margin-top: 20px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        canvas {
+            display: none;
+        }
+        .gallery-section {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<video class="background-video" autoplay muted loop>
+    <source src="video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<div class="signup-container">
+    <h2>Sign Up</h2>
+    
+    <form id="signup-form">
+        <input type="text" placeholder="username" id="username" required>
+        
+        <input type="password" placeholder="Password" id="password" required>
+        
+        <label for="image-upload">Choose picture:</label>
+        <input type="file" id="image-upload" accept="image/*" onchange="handleImageSelect(event)">
+        
+        <button type="button" onclick="startCamera()">Use Webcam</button>
+
+        <div class="camera-section" id="camera-section">
+            <video id="video" autoplay></video>
+            <br>
+            <button type="button" onclick="captureImage()">Capture Image</button>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="gallery-section" id="gallery-section">
+            <img id="gallery-preview" style="width: 100%; border: 1px solid #ddd;">
+        </div>
+        <br>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+
+<script>
+    const imageUpload = document.getElementById('image-upload');
+    const cameraSection = document.getElementById('camera-section');
+    const gallerySection = document.getElementById('gallery-section');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const galleryPreview = document.getElementById('gallery-preview');
+    
+    // Handle image selection
+    function handleImageSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+            cameraSection.style.display = 'none';
+            gallerySection.style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                galleryPreview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Start video stream from camera
+    function startCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.style.display = 'block';
+                cameraSection.style.display = 'block';
+            })
+            .catch(err => {
+                console.error("Error accessing camera: ", err);
+            });
+    }
+
+    // Capture image from camera
+    function captureImage() {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const imgData = canvas.toDataURL('image/png');
+        galleryPreview.src = imgData;
+        gallerySection.style.display = 'block';
+        cameraSection.style.display = 'none';
+        stopCamera();
+    }
+
+    // Stop the camera stream
+    function stopCamera() {
+        const stream = video.srcObject;
+        if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+        }
+    }
+</script>
+
+</body>
+</html>

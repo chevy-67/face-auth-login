@@ -116,7 +116,7 @@ def login():
             return render_template('login.html',msg=msg)
         temp_encoding = face_encodings[0]
 
-        model = load_model('models/mod_fin.h5')
+        model = load_model('models/model_v1.6.h5')
 
         def predict(img_path):
             img = cv2.imread(img_path)
@@ -126,7 +126,7 @@ def login():
 
             return pred[0]>0.95
 
-        if username not in user:
+        if not user:
             msg="User not exists!"
             return render_template('login.html',msg=msg)
 

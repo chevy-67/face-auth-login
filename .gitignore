@@ -1,1 +1,3 @@
 venv_py38/
+models/
+users.db
